@@ -1,12 +1,12 @@
 package main
 
 import (
-	"gonga/app/console"
+	"gonga/app/Console"
 	"gonga/bootstrap"
 )
 
 func main() {
-	
+
 	bootstrap.LoadEnv()
 
 	app:=bootstrap.NewApplication()

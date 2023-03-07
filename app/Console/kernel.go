@@ -1,7 +1,7 @@
 package console
 
 import (
-	"gonga/app/console/commands"
+	"gonga/app/Console/Commands"
 	"gonga/bootstrap"
 	"os"
 
