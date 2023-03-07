@@ -43,7 +43,6 @@ func (r *MyRouter) Post(path string, handler http.HandlerFunc, middleware ...fun
 }
 
 func (r *MyRouter) Put(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) {
-    println(r)
     r.Handle("PUT", path, applyMiddleware(handler, middleware...))
 }
 

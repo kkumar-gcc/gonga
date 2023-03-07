@@ -2,11 +2,9 @@ package config
 
 import (
 	"gonga/utils"
-	"log"
 	"strconv"
 	"strings"
 
-	"github.com/joho/godotenv"
 )
 
 type AppConfig struct {
@@ -19,12 +17,7 @@ type AppConfig struct {
 }
 
 func LoadAppConfig() *AppConfig {
-
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+	println(utils.Env("APP_NAME", "Gonga"))
 	debug, err := strconv.ParseBool(strings.ToLower(utils.Env("APP_DEBUG", "false")))
 	if err != nil {
 		debug = false

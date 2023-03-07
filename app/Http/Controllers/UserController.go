@@ -9,6 +9,7 @@ type UserController struct{}
 
 func (uc UserController) Index(w http.ResponseWriter, r *http.Request) {
 	// Handle GET /users request
+	
 }
 
 func (uc UserController) Show(w http.ResponseWriter, r *http.Request) {

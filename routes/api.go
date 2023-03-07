@@ -17,8 +17,5 @@ func RegisterApiRoutes(router *packages.MyRouter) {
 	router.Post("/users", UserController.Create)
 	router.Put("/users/{id}", UserController.Update)
 	router.Delete("/users/{id}", UserController.Delete)
-
-
-
 	
 }

@@ -1,29 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"gonga/commands"
-	"gonga/config"
-	"gonga/database/migrations"
-	"os"
+	"gonga/app/console"
+	"gonga/bootstrap"
 )
 
 func main() {
-	db, err := config.LoadDatabaseConfig()
-    if err != nil {
-        panic(err)
-    }
+	
+	bootstrap.LoadEnv()
 
-    err = migrations.AddEmailToUsersTable(db)
-    if err != nil {
-        panic(err)
-    }
+	app:=bootstrap.NewApplication()
 
-    fmt.Println("Migration complete!")
-
-	err2 := commands.Execute()
-	if err2 != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	// Register the routes
+	app.RegisterRoutes()
+	
+	// register commands
+	console.RegisterCommands(app)
 }
