@@ -6,14 +6,15 @@ import (
 )
 
 func main() {
-
 	bootstrap.LoadEnv()
 
-	app:=bootstrap.NewApplication()
+	app := bootstrap.NewApplication()
+    
+	db,_:=app.ConnectDatabase()
 
 	// Register the routes
-	app.RegisterRoutes()
-	
+	app.RegisterApiRoutes()
+    
 	// register commands
-	console.RegisterCommands(app)
+	console.RegisterCommands(app,db)
 }

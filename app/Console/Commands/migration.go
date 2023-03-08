@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"database/sql"
 	"fmt"
 	"gonga/bootstrap"
 	"os"
@@ -17,6 +16,7 @@ func MakeMigrationCmd(app *bootstrap.Application) *cobra.Command {
 		Short: "Create a new migration file",
 		Long:  "Create a new migration file with the specified name in the database/migrations directory.",
 		Args:  cobra.ExactArgs(1),
+		Hidden: true,
 		Run: func(_ *cobra.Command, args []string) {
 			name := args[0]
 			filePath := filepath.Join("database/migrations", name+".go")
@@ -46,24 +46,4 @@ func MakeMigrationCmd(app *bootstrap.Application) *cobra.Command {
 	}
 }
 
-var migrateCmd = &cobra.Command{
-	Use:   "migrate",
-	Short: "Run database migrations.",
-	Long:  "Run any pending database migrations.",
-	Run: func(_ *cobra.Command, _ []string) {
-		// Open a connection to the database using the configured credentials
-		db, err := sql.Open("mysql", "user:password@tcp(127.0.0.1:3306)/database")
-		if err != nil {
-			fmt.Printf("Error connecting to database: %s\n", err.Error())
-			os.Exit(1)
-		}
 
-		// Close the database connection when the command completes
-		defer db.Close()
-
-		// Run any pending database migrations using the configured migration tool (e.g. gorm)
-		// ...
-
-		fmt.Println("Database migrations completed.")
-	},
-}

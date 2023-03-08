@@ -1,13 +1,7 @@
 package config
 
 import (
-	"fmt"
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 type DatabaseConfig struct {
@@ -15,30 +9,19 @@ type DatabaseConfig struct {
 	Port     string
 	User     string
 	Password string
-	Name     string
+	Database     string
 	Charset  string
 }
 
-func LoadDatabaseConfig() (*gorm.DB, error) {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+func LoadDatabaseConfig() (*DatabaseConfig) {
+	return &DatabaseConfig{
+		Host:      os.Getenv("DB_HOST"),
+		Port:      os.Getenv("DB_PORT"),
+		User:     os.Getenv("DB_USERNAME"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Database:      os.Getenv("DB_DATABASE"),
+		Charset:  "utf8mb4",
 	}
-	username := os.Getenv("DB_USERNAME")
-	password := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	database := os.Getenv("DB_DATABASE")
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, database)
-	return gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 
-// return &DatabaseConfig{
-//     Host:     "localhost",
-//     Port:     "3306",
-//     User:     "root",
-//     Password: "",
-//     Name:     "my_database",
-//     Charset:  "utf8mb4",
-// }
+
