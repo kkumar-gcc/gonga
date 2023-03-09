@@ -3,13 +3,15 @@ package controllers
 import (
 	"net/http"
 
+	"gorm.io/gorm"
 )
 
-type UserController struct{}
+type UserController struct {
+	DB *gorm.DB
+}
 
 func (uc UserController) Index(w http.ResponseWriter, r *http.Request) {
 	// Handle GET /users request
-	
 }
 
 func (uc UserController) Show(w http.ResponseWriter, r *http.Request) {

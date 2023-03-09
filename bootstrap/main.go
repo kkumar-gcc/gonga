@@ -14,6 +14,7 @@ import (
 // Application represents the Golang application instance.
 type Application struct {
 	Router *packages.MyRouter
+	DB *gorm.DB
 }
 
 // NewApplication creates a new instance of the Golang application.
@@ -30,11 +31,16 @@ func (app *Application) RegisterApiRoutes() {
 	app.Router.Use(middlewares.CorsMiddleware)
 	app.Router.Use(middlewares.ThrottleMiddleware)
 
-	routes.RegisterApiRoutes(app.Router)
+	routes.RegisterApiRoutes(app.Router,app.DB)
 }
 // ConnectDatabase connects to database.
-func (app *Application) ConnectDatabase() (*gorm.DB, error) {
-	return database.Connect()
+func (app *Application) ConnectDatabase() error {
+    var err error
+    app.DB, err = database.Connect()
+    if err != nil {
+        return err
+    }
+    return nil
 }
 // Run starts the Golang application.
 func (app *Application) Run() error {

@@ -4,14 +4,12 @@ import (
     "gorm.io/gorm"
 )
 
-type User struct {
+type Post struct {
     gorm.Model
     Name    string   `gorm:"not null"`
     Email   string   `gorm:"unique;not null"`
 }
 
-func (User) TableName() string {
-    return "users"
+func (Post) TableName() string {
+    return "posts"
 }
-
-

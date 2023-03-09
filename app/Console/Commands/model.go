@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"gonga/bootstrap"
+	"gonga/packages/Stubs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -41,7 +42,7 @@ func MakeModelCmd(app *bootstrap.Application) *cobra.Command {
 			defer file.Close()
 
 			// Write the default controller code to the file
-			file.WriteString(fmt.Sprintf("package %s\n\nimport \"fmt\"\n\nfunc %s() {\n    fmt.Println(\"Hello from %s Model\")\n}", name, name, name))
+			file.WriteString(Stubs.GetModelStub(name))
 
 			// Print success message
 			fmt.Printf("Model [app/Models/%s.go] created successfully!\n", name)

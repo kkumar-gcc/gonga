@@ -1,18 +1,20 @@
 package routes
 
 import (
-    "gonga/packages"
 	"gonga/app/Http/Controllers"
 	"gonga/app/Http/Middlewares"
+	"gonga/packages"
+
+	"gorm.io/gorm"
 )
 
-func RegisterApiRoutes(router *packages.MyRouter) {
+func RegisterApiRoutes(router *packages.MyRouter,db *gorm.DB) {
 
 	router.Use(middlewares.LogMiddleware)
 
-	UserController := controllers.UserController{};
+	UserController := controllers.UserController{DB:db};
 
-	router.Get("/users", UserController.Index,middlewares.AuthMiddleware)
+	router.Get("/users", UserController.Index)
 	router.Get("/users/{id}", UserController.Show)
 	router.Post("/users", UserController.Create)
 	router.Put("/users/{id}", UserController.Update)

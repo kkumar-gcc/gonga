@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"gonga/bootstrap"
+	"gonga/packages/Stubs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -43,23 +44,7 @@ func MakeMiddlewareCmd(app *bootstrap.Application) *cobra.Command {
 			defer file.Close()
 
 			// Write the default controller code to the file
-			file.WriteString(fmt.Sprintf(
-				`
-			package middlewares
-
-			import (
-				"fmt"
-				"net/http"
-			)
-			
-			func %s(next http.HandlerFunc) http.HandlerFunc {
-				return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-					fmt.Println("Hello from %s.")
-					next.ServeHTTP(w, r)
-				})
-			}
-			`,
-				name, name))
+			file.WriteString(Stubs.GetMiddlewareStub(name))
 
 			// Print success message
 			fmt.Printf("Middleware [app/Http/Middlewares/%s.go] created successfully!\n", name)

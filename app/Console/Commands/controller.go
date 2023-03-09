@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"gonga/bootstrap"
+	"gonga/packages/Stubs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -42,7 +43,9 @@ func MakeControllerCmd(app *bootstrap.Application) *cobra.Command {
 			defer file.Close()
 
 			// Write the default controller code to the file
-			file.WriteString(fmt.Sprintf("package %s\n\nimport \"fmt\"\n\nfunc %s() {\n    fmt.Println(\"Hello from %s controller\")\n}", name, name, name))
+			file.WriteString(
+				Stubs.GetControllerStub(name),
+			)
 
 			// Print success message
 			fmt.Printf("Controller [app/Http/Controllers/%s.go] created successfully!\n", name)
@@ -50,3 +53,4 @@ func MakeControllerCmd(app *bootstrap.Application) *cobra.Command {
 		},
 	}
 }
+
