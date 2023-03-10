@@ -1,13 +1,13 @@
 package commands
 
 import (
-	"fmt"
 	"gonga/bootstrap"
 	"gonga/packages/Stubs"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ func MakeModelCmd(app *bootstrap.Application) *cobra.Command {
 				parts := strings.Split(name, "/")
 				dirPath = filepath.Join(parts[:len(parts)-1]...)
 				if err := os.MkdirAll(filepath.Join("app/Models", dirPath), os.ModePerm); err != nil {
-					fmt.Printf("Error creating directory: %s\n", err.Error())
+					pterm.Error.Printf("Error creating directory: %s\n", err.Error())
 					return
 				}
 				name = parts[len(parts)-1]
@@ -36,7 +36,7 @@ func MakeModelCmd(app *bootstrap.Application) *cobra.Command {
 			// Create the controller file
 			file, err := os.Create(filepath.Join("app/Models", dirPath, name+".go"))
 			if err != nil {
-				fmt.Printf("Error creating file: %s\n", err.Error())
+				pterm.Error.Printf("Error creating file: %s\n", err.Error())
 				return
 			}
 			defer file.Close()
@@ -45,7 +45,7 @@ func MakeModelCmd(app *bootstrap.Application) *cobra.Command {
 			file.WriteString(Stubs.GetModelStub(name))
 
 			// Print success message
-			fmt.Printf("Model [app/Models/%s.go] created successfully!\n", name)
+			pterm.Info.Printf("Model [app/Models/%s.go] created successfully!\n", name)
 		},
 	}
 }

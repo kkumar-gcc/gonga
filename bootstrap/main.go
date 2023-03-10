@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-	"fmt"
 	"gonga/app/Http/Middlewares"
 	"gonga/database"
 	"gonga/packages"
@@ -9,6 +8,7 @@ import (
 	"net/http"
 
 	"gorm.io/gorm"
+	"github.com/pterm/pterm"
 )
 
 // Application represents the Golang application instance.
@@ -44,7 +44,8 @@ func (app *Application) ConnectDatabase() error {
 }
 // Run starts the Golang application.
 func (app *Application) Run() error {
-	fmt.Println("Server started on [http://localhost:8000]")
+	pterm.Info.Println("Server started on [http://localhost:8000]")
+	pterm.DefaultBasicText.Println("")
 	return http.ListenAndServe(":8000", app.Router)
 }
 

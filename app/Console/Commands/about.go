@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"fmt"
 	"gonga/bootstrap"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +29,7 @@ func AboutCmd(app *bootstrap.Application) *cobra.Command {
 		 * @var string
 		 */
 		Run: func(_ *cobra.Command, _ []string) {
-			fmt.Println("This is a sample application built with Go and Cobra")
+			pterm.Info.Println("This is a sample application built with Go and Cobra")
 		},
 	}
 }

@@ -1,13 +1,13 @@
 package commands
 
 import (
-	"fmt"
 	"gonga/bootstrap"
 	"gonga/packages/Stubs"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ func MakeControllerCmd(app *bootstrap.Application) *cobra.Command {
 				parts := strings.Split(name, "/")
 				dirPath = filepath.Join(parts[:len(parts)-1]...)
 				if err := os.MkdirAll(filepath.Join("app/Http/Controllers", dirPath), os.ModePerm); err != nil {
-					fmt.Printf("Error creating directory: %s\n", err.Error())
+					pterm.Error.Printf("Error creating directory: %s\n", err.Error())
 					return
 				}
 				name = parts[len(parts)-1]
@@ -37,7 +37,7 @@ func MakeControllerCmd(app *bootstrap.Application) *cobra.Command {
 			// Create the controller file
 			file, err := os.Create(filepath.Join("app/Http/Controllers", dirPath, name+".go"))
 			if err != nil {
-				fmt.Printf("Error creating file: %s\n", err.Error())
+				pterm.Error.Printf("Error creating file: %s\n", err.Error())
 				return
 			}
 			defer file.Close()
@@ -48,7 +48,7 @@ func MakeControllerCmd(app *bootstrap.Application) *cobra.Command {
 			)
 
 			// Print success message
-			fmt.Printf("Controller [app/Http/Controllers/%s.go] created successfully!\n", name)
+			pterm.Info.Printf("Controller [app/Http/Controllers/%s.go] created successfully!\n", name)
 
 		},
 	}

@@ -18,13 +18,12 @@ func MigrateCmd(app *bootstrap.Application) *cobra.Command {
 			// Open a connection to the database using the configured credentials
              db:=app.DB
 			// Register the migrations
+			db.Debug()
 			err := db.AutoMigrate(
 				&Models.User{},
 				&Models.Address{},
+				&Models.Post{},
 			)
-			insertProduct := &Models.User{Name: "Krishan", Email: "1@2.com"}
-
-			db.Create(insertProduct)
 			if err != nil {
 				log.Fatalf("Error running migrations: %v", err)
 			}
