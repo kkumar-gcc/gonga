@@ -16,7 +16,10 @@ database/*.db
 build/
 
 # Ignore log files
-logs/
+# logs/
+
+# Ignore storage folder when symlink is found in public directory
+public/storage
 
 # Ignore config files that may contain secrets
 config/app.toml
