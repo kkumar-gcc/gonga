@@ -18,7 +18,15 @@ func Connect() (*gorm.DB, error) {
 	})
 
 	if err != nil {
-		panic("Failed to connect to database!")
+		pterm.Error.WithShowLineNumber(true).Println("Cannot connect to database.", err)
+		/**
+		 * Use panic when something horribly goes wrong, i.e. an error that should have been
+		 * caught before going to production. This is why is prints the stack.
+		 *
+		 * Use os.Exit to terminate the application cleanly for users.
+		 * https://stackoverflow.com/a/28473273/12478479
+		 */
+		os.Exit(0)
 	}
 
 	return db, nil
