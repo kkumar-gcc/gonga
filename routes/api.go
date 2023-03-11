@@ -10,8 +10,8 @@ import (
 
 func RegisterApiRoutes(router *packages.MyRouter,db *gorm.DB) {
 
-	router.Use(middlewares.LogMiddleware)
-
+	router.Use(middlewares.LogMiddleware).StrictSlash(true)
+	
 	UserController := controllers.UserController{DB:db};
 
 	router.Get("/users", UserController.Index)

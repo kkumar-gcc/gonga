@@ -14,6 +14,7 @@ type Route interface {
     Post(path string, handler HandlerFunc)
     Put(path string, handler HandlerFunc)
     Delete(path string, handler HandlerFunc)
+
 }
 type MyRouter struct {
     *mux.Router
@@ -25,29 +26,38 @@ func NewRouter() *MyRouter {
     }
 }
 
-
 func (r *MyRouter) Handle(method string, path string, handler http.HandlerFunc) {
     r.Router.HandleFunc(path, handler).Methods(method)
 
 }
-func (r *MyRouter) Use(middleware func(http.Handler) http.Handler) {
+func (r *MyRouter) Use(middleware func(http.Handler) http.Handler) *MyRouter {
     r.Router.Use(middleware)
+    return r
+}
+func (r *MyRouter) Subrouter(path string) *MyRouter {
+	// initialize a subrouter with a copy of the parent route's configuration
+	r.PathPrefix(path).Subrouter()
+	return r
 }
 
-func (r *MyRouter) Get(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) {
+func (r *MyRouter) Get(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) *MyRouter {
     r.Handle("GET", path, applyMiddleware(handler, middleware...))
+    return r
 }
 
-func (r *MyRouter) Post(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) {
+func (r *MyRouter) Post(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) *MyRouter{
     r.Handle("POST", path, applyMiddleware(handler, middleware...))
+    return r
 }
 
-func (r *MyRouter) Put(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) {
+func (r *MyRouter) Put(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) *MyRouter{
     r.Handle("PUT", path, applyMiddleware(handler, middleware...))
+    return r
 }
 
-func (r *MyRouter) Delete(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) {
+func (r *MyRouter) Delete(path string, handler http.HandlerFunc, middleware ...func(http.HandlerFunc) http.HandlerFunc) *MyRouter{
     r.Handle("DELETE", path, applyMiddleware(handler, middleware...))
+    return r
 }
 
 
