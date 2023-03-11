@@ -41,3 +41,6 @@ config/database.toml
 
 # Ignore generated documentation
 docs/
+
+# Ignore personal research notes
+notes.md
