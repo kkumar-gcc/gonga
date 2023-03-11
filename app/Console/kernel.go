@@ -1,14 +1,15 @@
 package console
 
 import (
-	"gonga/app/Console/Commands"
+	commands "gonga/app/Console/Commands"
 	"gonga/bootstrap"
 	"os"
 
 	"github.com/spf13/cobra"
 )
+
 var rootCmd = &cobra.Command{
-	Use: "command",
+	Use:   "command",
 	Short: "Gonga Framework 0.0.0",
 }
 
@@ -28,7 +29,7 @@ func Run(app *bootstrap.Application) error {
 	return rootCmd.Execute()
 }
 
-func RegisterCommands(app *bootstrap.Application){
+func RegisterCommands(app *bootstrap.Application) {
 	err2 := Run(app)
 	if err2 != nil {
 		os.Exit(1)
