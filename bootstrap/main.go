@@ -45,7 +45,5 @@ func (app *Application) ConnectDatabase() error {
 // Run starts the Golang application.
 func (app *Application) Run() error {
 	pterm.Info.Println("Server started on [http://localhost:8000]")
-	pterm.DefaultBasicText.Println("")
 	return http.ListenAndServe(":8000", app.Router)
 }
-
