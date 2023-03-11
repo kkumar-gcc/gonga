@@ -12,6 +12,9 @@ import (
  * Define Custom Logger to implement log.Logger
  * The name is inspired by winstonjs/winston. A logger for just about everything.
  * Winston and Marlboro are both American brand of cigarettes.
+ *
+ * Marlboro Logger is designed to save important error logs.
+ * Helpful for debugging in both development and production.
  */
 var Marlboro *log.Logger
 
