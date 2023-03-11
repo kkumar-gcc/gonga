@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 
+	"github.com/pterm/pterm"
 	"gorm.io/gorm"
 )
 
@@ -12,6 +14,16 @@ type UserController struct {
 
 func (uc UserController) Index(w http.ResponseWriter, r *http.Request) {
 	// Handle GET /users request
+	// Sample json response
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	resp := make(map[string]string)
+	resp["message"] = "Status OK"
+	jsonResp, err := json.Marshal(resp)
+	if err != nil {
+		pterm.Error.Println("In UserController index:", err)
+	}
+	w.Write(jsonResp)
 }
 
 func (uc UserController) Show(w http.ResponseWriter, r *http.Request) {
