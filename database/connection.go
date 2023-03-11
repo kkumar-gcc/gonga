@@ -3,9 +3,13 @@ package database
 import (
 	"fmt"
 	"gonga/config"
+	"gonga/utils"
+	"os"
 
+	"github.com/pterm/pterm"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func Connect() (*gorm.DB, error) {
