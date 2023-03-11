@@ -9,7 +9,7 @@ import (
 )
 var rootCmd = &cobra.Command{
 	Use: "command",
-	Short: "A CLI tool to manage application.",
+	Short: "Gonga Framework 0.0.0",
 }
 
 func Run(app *bootstrap.Application) error {
