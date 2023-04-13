@@ -18,7 +18,7 @@ func IsAuthenticate(r *http.Request) bool {
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Provide a signing key
-		return []byte(Env("JWT_SECRET_KEY", "my-secret-key")), nil
+		return []byte(Env("APP_KEY", "my-secret-key")), nil
 	})
 
 	if err != nil {
@@ -47,7 +47,7 @@ func GenerateToken(userID int) (string, error) {
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix() // Token expires in 24 hours
 
 	// Get the secret key from an environment variable
-	secretKey := []byte(Env("JWT_SECRET_KEY", "my-secret-key"))
+	secretKey := []byte(Env("APP_KEY", "my-secret-key"))
 
 	// Generate the signed token string
 	tokenString, err := token.SignedString(secretKey)
