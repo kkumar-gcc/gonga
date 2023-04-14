@@ -2,7 +2,6 @@ package routes
 
 import (
 	controllers "gonga/app/Http/Controllers"
-	auth "gonga/app/Http/Controllers/Auth"
 	middlewares "gonga/app/Http/Middlewares"
 	"gonga/packages"
 
@@ -18,20 +17,40 @@ import (
 func RegisterApiRoutes(router *packages.MyRouter, db *gorm.DB) {
 
 	UserController := controllers.UserController{DB: db}
-	LoginController := auth.LoginController{DB: db}
-	RegisterController := auth.RegisterController{DB: db}
-
-	// Login API endpoint handlers
-	router.Post("/login", LoginController.Create)
-
-	// Register API endpoint handlers
-	router.Post("/register", RegisterController.Create)
+	SearchController := controllers.SearchController{DB: db}
+	PostController := controllers.PostController{DB: db}
+	NotificationController := controllers.NotificationController{DB: db}
+	FollowController := controllers.FollowController{DB: db}
 
 	// User API endpoint handlers
-	router.Get("/users", UserController.Index, middlewares.AuthMiddleware)
-	router.Get("/users/{id}", UserController.Show, middlewares.AuthMiddleware)
-	router.Post("/users", UserController.Create)
-	router.Put("/users/{id}", UserController.Update)
-	router.Delete("/users/{id}", UserController.Delete)
+	router.Get("/users", UserController.Index)
+	router.Get("/users/{id}", UserController.Show)
+	// router.Post("/users", UserController.Create)
+	router.Put("/users/{id}", UserController.Update, middlewares.AuthMiddleware)
+	router.Delete("/users/{id}", UserController.Delete, middlewares.AuthMiddleware)
 
+	// Post API endpoint handlers
+	router.Get("/posts", PostController.Index)
+	router.Post("/posts", PostController.Create, middlewares.AuthMiddleware)
+	router.Get("/posts/{id}", PostController.Show)
+	router.Put("/posts/{id}", PostController.Update, middlewares.AuthMiddleware)
+	router.Delete("/posts/{id}", PostController.Delete, middlewares.AuthMiddleware)
+	// router.Get("/posts/{id}/comments", PostController.Comments, middlewares.AuthMiddleware)
+	// router.Post("/posts/{id}/comments", PostController.CreateComment, middlewares.AuthMiddleware)
+	// router.Post("/posts/{id}/like", PostController.Like, middlewares.AuthMiddleware)
+	// router.Post("/posts/{id}/unlike", PostController.Unlike, middlewares.AuthMiddleware)
+
+	// Follow API endpoint handlers
+	router.Post("/users/{id}/friend_requests", FollowController.Index, middlewares.AuthMiddleware)
+
+	// Notification API endpoint handlers
+	router.Get("/notifications", NotificationController.Index, middlewares.AuthMiddleware)
+	router.Post("/notifications/read_all", NotificationController.ReadAll, middlewares.AuthMiddleware)
+	router.Post("/notifications/{id}/read", NotificationController.Update, middlewares.AuthMiddleware)
+
+	// Search API endpoint handlers
+	router.Get("/search", SearchController.Index)
+
+	// Register Auth Routes
+	RegisterAuthRoutes(router, db)
 }
