@@ -27,10 +27,11 @@ func NewApplication() *Application {
 
 // RegisterRoutes registers the application's routes.
 func (app *Application) RegisterApiRoutes() {
-
-	app.Router.Use(middlewares.CorsMiddleware)
-	app.Router.Use(middlewares.ThrottleMiddleware)
-
+    // default middlewares
+	app.Router.Use(middlewares.CorsMiddleware).StrictSlash(true)
+	app.Router.Use(middlewares.ThrottleMiddleware).StrictSlash(true)
+	app.Router.Use(middlewares.LogMiddleware).StrictSlash(true)
+	
 	routes.RegisterApiRoutes(app.Router, app.DB)
 }
 
