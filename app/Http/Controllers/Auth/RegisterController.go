@@ -1,9 +1,9 @@
 package auth
 
 import (
+	"gonga/app/Models"
 	"gonga/utils"
 	"net/http"
-	"strconv"
 
 	"gorm.io/gorm"
 )
@@ -45,14 +45,25 @@ func (c RegisterController) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create user in database
-	userID, err := createUser(user.Username, user.Password, user.Email)
+	hashedPassword, err := utils.HashPassword(user.Password)
+	
 	if err != nil {
 		utils.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 		return
 	}
+	newUser := Models.User{
+		Username: user.Username,
+		Email:    user.Email,
+		Password: hashedPassword,
+	}
+	result := c.DB.Create(&newUser)
+	if result.Error != nil {
+		utils.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": result.Error.Error()})
+		return
+	}
 
 	// Generate JWT token
-	token, err := utils.GenerateToken(userID)
+	token, err := utils.GenerateToken(int(newUser.ID))
 	if err != nil {
 		utils.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 		return
@@ -61,7 +72,7 @@ func (c RegisterController) Create(w http.ResponseWriter, r *http.Request) {
 	// Send response
 	response := RegisterResponse{
 		Token:   token,
-		UserID:  userID,
+		UserID:  int(newUser.ID),
 		Message: "Registration successful",
 	}
 	utils.JSONResponse(w, http.StatusOK, response)
@@ -75,10 +86,4 @@ func (c RegisterController) Update(w http.ResponseWriter, r *http.Request) {
 
 func (c RegisterController) Delete(w http.ResponseWriter, r *http.Request) {
 	// Handle DELETE /registercontroller/{id} request
-}
-
-func createUser(username string, password string, email string) (int, error) {
-	// TODO: Implement user creation in database here
-	// For now, just return a dummy user ID
-	return strconv.Atoi("123")
 }

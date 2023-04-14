@@ -1,11 +1,14 @@
 package utils
 
 import (
+	"gonga/app/Models"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/schema"
+	"gorm.io/gorm"
 )
 
 func IsAuthenticate(r *http.Request) bool {
@@ -32,9 +35,20 @@ func IsAuthenticate(r *http.Request) bool {
 	return true
 }
 
-func Authenticate(username, password string) (int, error) {
-	// TODO: Implement authentication logic and database lookup here
-	return 1, nil // Return a dummy user ID for now
+func Authenticate(username, password string, db *gorm.DB) (int, error) {
+	// Get user by username from database
+	var user Models.User
+	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
+		return 0, err
+	}
+	
+	// Compare passwords
+	if err := VerifyPassword(user.Password, password); err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	return int(user.ID), nil
 }
 
 func GenerateToken(userID int) (string, error) {

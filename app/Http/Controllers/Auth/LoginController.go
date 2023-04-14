@@ -8,7 +8,7 @@ import (
 	// "github.com/golang-jwt/jwt/v5"
 )
 
-type LoginUser struct {
+type LoginRequest struct {
 	Username string `json:"username" validate:"required,min=3,max=5"`
 	Password string `json:"password" validate:"required,min=8"`
 }
@@ -36,7 +36,7 @@ func (c LoginController) Create(w http.ResponseWriter, r *http.Request) {
 	// You can get the request body by reading from r.Body
 	// You can send a response by writing to w
 	// Parse request body
-	var user LoginUser
+	var user LoginRequest
 
 	if err := utils.DecodeRequestBody(r, &user); err != nil {
 		utils.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
@@ -47,7 +47,7 @@ func (c LoginController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Check credentials and get user ID from database
-	userID, err := utils.Authenticate(user.Username, user.Password)
+	userID, err := utils.Authenticate(user.Username, user.Password, c.DB)
 	if err != nil {
 		utils.JSONResponse(w, http.StatusUnauthorized, map[string]string{"error": "Invalid username or password"})
 		return
