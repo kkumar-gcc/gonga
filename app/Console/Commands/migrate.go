@@ -16,12 +16,14 @@ func MigrateCmd(app *bootstrap.Application) *cobra.Command {
 		Long:  "Run any pending database migrations.",
 		Run: func(_ *cobra.Command, _ []string) {
 			// Open a connection to the database using the configured credentials
-             db:=app.DB
+			db := app.DB
 			// Register the migrations
 			db.Debug()
 			err := db.AutoMigrate(
+				&Models.Comment{},
+				&Models.Follow{},
+				&Models.Like{},
 				&Models.User{},
-				&Models.Address{},
 				&Models.Post{},
 			)
 			if err != nil {
