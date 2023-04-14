@@ -32,6 +32,15 @@ func (c LoginController) Show(w http.ResponseWriter, r *http.Request) {
 	// Handle GET /logincontroller/{id} request
 }
 
+// @Summary [Short summary of API endpoint]
+// @Description [Detailed description of API endpoint]
+// @Tags [Comma-separated list of API tags]
+// @Accept [List of accepted MIME types]
+// @Produce [List of produced MIME types]
+// @Param [Name of input parameter] [Parameter location] [Data type] [Required?] [Description]
+// @Success [HTTP status code] [Response data type] [Response description]
+// @Failure [HTTP status code] [Response data type] [Response description]
+// @Router [API endpoint URL] [HTTP method]
 func (c LoginController) Create(w http.ResponseWriter, r *http.Request) {
 	// Handle POST /logincontroller request
 	// You can get the request body by reading from r.Body
