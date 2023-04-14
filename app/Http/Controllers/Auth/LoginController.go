@@ -2,6 +2,7 @@ package auth
 
 import (
 	"gonga/utils"
+	"log"
 	"net/http"
 
 	"gorm.io/gorm"
@@ -43,6 +44,7 @@ func (c LoginController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Validate user data
+	log.Println(user)
 	if err := utils.ValidateRequest(w, &user); err != nil {
 		return
 	}
