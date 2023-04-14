@@ -51,13 +51,11 @@ func RegisterApiRoutes(router *packages.MyRouter, db *gorm.DB) {
 	// Search API endpoint handlers
 	router.Get("/search", SearchController.Index)
 
-
-
-
 	// ******************************
 	// *    ALERT: DO NOT EDIT!     *
 	// * This area is non-editable. *
 	// ******************************
+
 	// Register Auth Routes
 	RegisterAuthRoutes(router, db)
 }
