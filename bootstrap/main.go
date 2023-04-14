@@ -3,11 +3,13 @@ package bootstrap
 import (
 	middlewares "gonga/app/Http/Middlewares"
 	"gonga/database"
+	_ "gonga/docs"
 	"gonga/packages"
 	"gonga/routes"
 	"net/http"
 
 	"github.com/pterm/pterm"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/gorm"
 )
 
@@ -27,11 +29,14 @@ func NewApplication() *Application {
 
 // RegisterRoutes registers the application's routes.
 func (app *Application) RegisterApiRoutes() {
-    // default middlewares
+	// default middlewares
 	app.Router.Use(middlewares.CorsMiddleware).StrictSlash(true)
 	app.Router.Use(middlewares.ThrottleMiddleware).StrictSlash(true)
 	app.Router.Use(middlewares.LogMiddleware).StrictSlash(true)
 	
+	// Serve swagger UI
+	app.Router.PathPrefix("/docs/").Handler(httpSwagger.Handler())
+
 	routes.RegisterApiRoutes(app.Router, app.DB)
 }
 

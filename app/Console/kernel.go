@@ -25,6 +25,7 @@ func Run(app *bootstrap.Application) error {
 	rootCmd.AddCommand(commands.MigrateCmd(app))
 	rootCmd.AddCommand(commands.MakeMiddlewareCmd(app))
 	rootCmd.AddCommand(commands.KeyGenerateCmd(app))
+	rootCmd.AddCommand(commands.DocGenerateCmd(app))
 	
 	rootCmd.AddCommand(commands.ServeCmd(app))
 
