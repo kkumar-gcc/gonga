@@ -43,7 +43,7 @@ config/database.toml
 *.bak
 
 # Ignore generated documentation
-docs/
+# docs/
 
 # Ignore personal research notes
 notes.md

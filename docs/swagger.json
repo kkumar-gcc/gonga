@@ -1,0 +1,87 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A social media api.",
+        "title": "Gonga Api",
+        "contact": {
+            "name": "API Support"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/users/{id}": {
+            "get": {
+                "description": "Get user information by user ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get user by ID",
+                "operationId": "get-user-by-id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.UserResponse": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "description": "in:body",
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "integer"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
