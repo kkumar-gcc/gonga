@@ -3,7 +3,6 @@ package config
 import (
 	"os"
 )
-
 type DatabaseConfig struct {
 	Host     string
 	Port     string

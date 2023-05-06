@@ -8,8 +8,8 @@ type Post struct {
     gorm.Model
     UserID    uint       `json:"-"`
     User      User       `json:"user" gorm:"foreignKey:UserID"`
-    Text      string     `json:"text"`
-    ImageURL  string     `json:"image_url"`
+    Body      string     `json:"body"`
+    MediaURL  string     `json:"media_url"`
     Likes     []Like     `json:"-" gorm:"foreignKey:PostID"`
     Comments  []Comment  `json:"-" gorm:"foreignKey:PostID"`
 }

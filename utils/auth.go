@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"gonga/app/Models"
 	"log"
 	"net/http"
@@ -51,6 +53,13 @@ func Authenticate(username, password string, db *gorm.DB) (int, error) {
 	return int(user.ID), nil
 }
 
+func UserExistsWithEmail(db *gorm.DB, email string) bool {
+    var user Models.User
+    result := db.Where("email = ?", email).First(&user)
+    return result.Error == nil && result.RowsAffected > 0
+}
+
+
 func GenerateToken(userID int) (string, error) {
 	// Create the token
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -84,3 +93,12 @@ func DecodeRequestBody(r *http.Request, v interface{}) error {
 
 	return nil
 }
+
+func GenerateRandomString(length int) (string, error) {
+    bytes := make([]byte, length)
+    if _, err := rand.Read(bytes); err != nil {
+        return "", err
+    }
+    return base64.URLEncoding.EncodeToString(bytes), nil
+}
+

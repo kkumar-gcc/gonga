@@ -2,8 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -18,6 +20,18 @@ import (
 func Env(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
+	}
+	return fallback
+}
+func EnvInt(key string, fallback int) int {
+	if value, ok := os.LookupEnv(key); ok {
+		num, err := strconv.Atoi(value)
+		if err != nil {
+			// handle error
+			fmt.Println("Error:", err)
+			os.Exit(0)
+		}
+		return num
 	}
 	return fallback
 }

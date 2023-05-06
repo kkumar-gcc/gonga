@@ -10,8 +10,10 @@ type Comment struct {
     User      User      `json:"user" gorm:"foreignKey:UserID"`
     PostID    uint      `json:"-"`
     Post      Post      `json:"post" gorm:"foreignKey:PostID"`
-    Text      string    `json:"text"`
+    Body      string    `json:"body"`
     Likes     []Like    `json:"-" gorm:"foreignKey:CommentID"`
+    ParentID  *uint     `json:"-"`
+    Parent    *Comment  `json:"parent" gorm:"foreignKey:ParentID"`
 }
 
 func (Comment) TableName() string {
