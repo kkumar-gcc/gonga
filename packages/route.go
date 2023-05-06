@@ -14,7 +14,6 @@ type Route interface {
     Post(path string, handler HandlerFunc)
     Put(path string, handler HandlerFunc)
     Delete(path string, handler HandlerFunc)
-
 }
 type MyRouter struct {
     *mux.Router
