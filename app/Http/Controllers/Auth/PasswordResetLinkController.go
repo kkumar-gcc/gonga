@@ -1,11 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"gonga/app/Models"
+	mail "gonga/packages/Mail"
 	"gonga/utils"
 	"net/http"
 	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -63,10 +64,10 @@ func (c PasswordResetLinkController) Create(w http.ResponseWriter, r *http.Reque
     }
     
     // Send email with the password reset link containing the token
-	// if err := utils.SendPasswordResetEmail(passwordReset.Email, token); err != nil {
-	// 	utils.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
-	// 	return
-	// }
+	if err := sendPasswordResetEmail(passwordReset.Email, token); err != nil {
+		utils.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return
+	}
 	utils.JSONResponse(w, http.StatusOK, map[string]string{"message": "Password reset link sent"})
 }
 
@@ -79,4 +80,32 @@ func (c PasswordResetLinkController) Update(w http.ResponseWriter, r *http.Reque
 
 func (c PasswordResetLinkController) Delete(w http.ResponseWriter, r *http.Request) {
 	// Handle DELETE /passwordresetlinkcontroller/{id} request
+}
+
+
+func sendPasswordResetEmail(email, token string) error {
+	// Create a new password reset email
+	// Define email content
+	resetLink := fmt.Sprintf("https://example.com/reset_password?token=%s", token)
+	textContent := fmt.Sprintf("Click on the following link to reset your password: %s", resetLink)
+	htmlContent := fmt.Sprintf("<p>Click <a href=\"%s\">here</a> to reset your password</p>", resetLink)
+	resetEmail := &mail.Mailable{
+		To: []string{email},
+		Content: struct {
+			Subject string
+			Html    string
+			Text    string
+		}{
+			Subject: "Password Reset",
+			Text:    textContent,
+			Html:    htmlContent,
+		},
+	}
+
+	// Send the email
+	if err := resetEmail.Send(); err != nil {
+		return err
+	}
+
+	return nil
 }
