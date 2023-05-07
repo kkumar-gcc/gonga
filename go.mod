@@ -9,6 +9,11 @@ require (
 )
 
 require (
+	github.com/creasty/defaults v1.5.1 // indirect
+	github.com/google/uuid v1.2.0
+)
+
+require (
 	atomicgo.dev/cursor v0.1.1 // indirect
 	atomicgo.dev/keyboard v0.2.9 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
@@ -47,6 +52,7 @@ require (
 )
 
 require (
+	github.com/cloudinary/cloudinary-go/v2 v2.2.0
 	github.com/go-playground/validator/v10 v10.12.0
 	github.com/golang-jwt/jwt/v5 v5.0.0-rc.2
 	github.com/gorilla/mux v1.8.0
