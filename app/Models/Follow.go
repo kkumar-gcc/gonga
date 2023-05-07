@@ -5,13 +5,11 @@ import (
 )
 
 type Follow struct {
-    gorm.Model
-    FollowerID uint      `json:"-"`
-    Follower   User      `json:"follower" gorm:"foreignKey:FollowerID"`
-    FollowingID uint     `json:"-"`
-    Following   User     `json:"following" gorm:"foreignKey:FollowingID"`
+	gorm.Model
+	FollowerID uint `json:"follower_id" gorm:"not null"`
+	FollowingID uint `json:"following_id" gorm:"not null"`
 }
 
 func (Follow) TableName() string {
-    return "follows"
+	return "follows"
 }

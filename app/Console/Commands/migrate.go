@@ -23,6 +23,8 @@ func MigrateCmd(app *bootstrap.Application) *cobra.Command {
 				&Models.Comment{},
 				&Models.Follow{},
 				&Models.Like{},
+				&Models.Media{},
+				&Models.Tag{},
 				&Models.User{},
 				&Models.Post{},
 				&Models.PasswordReset{},
