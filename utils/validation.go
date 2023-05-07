@@ -138,9 +138,15 @@ var Validation = map[string]interface{}{
 	"uuid3_rfc4122" : "The :attribute must be a valid UUID v3 RFC4122.",
 }
 
-// :attribute :other :values :value :min :max :date :formate
-
-func ValidationMessage(e validator.FieldError) string{
+// ValidationMessage returns a formatted error message for the given validator.FieldError.
+// It replaces placeholders in the error message with values from the validation error.
+//
+// Parameters:
+//   - e (validator.FieldError): The validation error to format.
+//
+// Returns:
+//  - message (string): The formatted error message for the given validation error.
+func ValidationMessage(e validator.FieldError) string {
 	messages := Validation
 	// replace placeholders with values
     attribute := e.Field()
