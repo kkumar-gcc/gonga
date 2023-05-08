@@ -43,8 +43,8 @@ go run main.go migrate
 
 ## Contributing
 
-If you are interested in contributing to Gonga, please read our [contribution guidelines]("https://github.com/kkumar-gcc/gonga/blob/main/CONTRIBUTING.md") before getting started. We welcome all contributions, big or small!
+If you are interested in contributing to Gonga, please read our [contribution guidelines](https://github.com/kkumar-gcc/gonga/blob/main/CONTRIBUTING.md) before getting started. We welcome all contributions, big or small!
 
 ## License
 
-Gonga is licensed under the [MIT License]("").
+Gonga is licensed under the [MIT License]().
