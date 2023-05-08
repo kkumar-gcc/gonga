@@ -29,7 +29,7 @@ Any participant in the Gonga community who engages in behavior that violates thi
 
 ## Reporting Guidelines
 
-If you experience or witness behavior that violates this code of conduct, please notify the Gonga team as soon as possible by sending an email to [insert email address here]. All reports will be kept confidential.
+If you experience or witness behavior that violates this code of conduct, please notify the Gonga team as soon as possible by sending an email to []. All reports will be kept confidential.
 
 ## Attribution
 

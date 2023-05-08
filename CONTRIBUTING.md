@@ -14,7 +14,7 @@ If you find a bug or have a feature request, please create an issue in the repos
 
 ## Code of Conduct
 
-We expect all contributors to follow our [code of conduct](https://github.com/kkumar-gcc/gonga/blob/main/CODE_OF_CONDUCT.md) when participating in the project.
+We expect all contributors to follow our [code of conduct](CODE_OF_CONDUCT.md) when participating in the project.
 
 ## License
 
