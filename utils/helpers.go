@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -17,7 +18,8 @@ import (
 // Otherwise, the fallback value is returned.
 //
 // Example usage:
-//   port := Env("PORT", "8080")
+//
+//	port := Env("PORT", "8080")
 //
 // Parameters:
 //   - key (string): The name of the environment variable to get the value of.
@@ -32,15 +34,14 @@ func Env(key, fallback string) string {
 	return fallback
 }
 
-
-
 // EnvInt gets the integer value of an environment variable.
 //
 // If the environment variable with the specified key exists and its value is an integer,
 // its integer value is returned. Otherwise, the fallback value is returned.
 //
 // Example usage:
-//   maxConnections := EnvInt("MAX_CONNECTIONS", 100)
+//
+//	maxConnections := EnvInt("MAX_CONNECTIONS", 100)
 //
 // Parameters:
 //   - key (string): The name of the environment variable to get the value of.
@@ -67,8 +68,9 @@ func EnvInt(key string, fallback int) int {
 // during marshalling, it returns a 500 Internal Server Error with the error message.
 //
 // Example usage:
-//   data := map[string]string{"message": "Hello, world!"}
-//   JSONResponse(w, http.StatusOK, data)
+//
+//	data := map[string]string{"message": "Hello, world!"}
+//	JSONResponse(w, http.StatusOK, data)
 //
 // Parameters:
 //   - w (http.ResponseWriter): The response writer to write the JSON response to.
@@ -95,17 +97,17 @@ func JSONResponse(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Write(responseJSON)
 }
 
-
 // ErrorResponse is a struct that represents the response format for validation errors.
 // It contains a map of field names and their corresponding error messages.
 //
 // Example usage:
-//   errResponse := ErrorResponse{
-//      Errors: map[string]string{
-//          "username": "Username is already taken",
-//          "email": "Email address is invalid",
-//      },
-//   }
+//
+//	errResponse := ErrorResponse{
+//	   Errors: map[string]string{
+//	       "username": "Username is already taken",
+//	       "email": "Email address is invalid",
+//	   },
+//	}
 //
 // Fields:
 //   - Errors (map[string]string): The map of field names and their corresponding error messages.
@@ -113,35 +115,34 @@ type ErrorResponse struct {
 	Errors map[string]string `json:"errors"`
 }
 
-
-
 // ValidateRequest validates the given request data against the specified validation rules
 // using the Go Playground Validator library, and sends a formatted error response if validation fails.
 // If validation is successful, it returns nil.
 //
 // Example usage:
-//   type User struct {
-//       Name  string `json:"name" validate:"required"`
-//       Email string `json:"email" validate:"required,email"`
-//   }
 //
-//   func CreateUser(w http.ResponseWriter, r *http.Request) {
-//       var user User
-//       decoder := json.NewDecoder(r.Body)
-//       if err := decoder.Decode(&user); err != nil {
-//           JSONResponse(w, http.StatusBadRequest, ErrorResponse{Errors: map[string]string{"message": "Invalid request payload"}})
-//           return
-//       }
+//	type User struct {
+//	    Name  string `json:"name" validate:"required"`
+//	    Email string `json:"email" validate:"required,email"`
+//	}
 //
-//       // Validate the request payload using the `User` struct as validation rules
-//       if err := ValidateRequest(w, user); err != nil {
-//           return
-//       }
+//	func CreateUser(w http.ResponseWriter, r *http.Request) {
+//	    var user User
+//	    decoder := json.NewDecoder(r.Body)
+//	    if err := decoder.Decode(&user); err != nil {
+//	        JSONResponse(w, http.StatusBadRequest, ErrorResponse{Errors: map[string]string{"message": "Invalid request payload"}})
+//	        return
+//	    }
 //
-//       // Create the user
-//       // ...
-//   }
-//   
+//	    // Validate the request payload using the `User` struct as validation rules
+//	    if err := ValidateRequest(w, user); err != nil {
+//	        return
+//	    }
+//
+//	    // Create the user
+//	    // ...
+//	}
+//
 // Parameters:
 //   - w (http.ResponseWriter): The response writer to send the error response to.
 //   - rules (interface{}): The validation rules to apply to the request data. The validation rules
@@ -157,6 +158,7 @@ func ValidateRequest(w http.ResponseWriter, rules interface{}) error {
 		// Extract field names and error messages from the validation errors
 		errors := make(map[string]string)
 		for _, e := range err.(validator.ValidationErrors) {
+			log.Println(e)
 			errors[e.Field()] = ValidationMessage(e)
 		}
 		// Create the error response
@@ -168,13 +170,13 @@ func ValidateRequest(w http.ResponseWriter, rules interface{}) error {
 	return nil
 }
 
-
 // GetPaginationParams extracts pagination parameters from the provided HTTP request's query string.
 // If the "page" or "per_page" parameters are not present in the query string, this function will use the provided default values.
 // It returns two integers: the page number and the number of items per page.
 //
 // Example usage:
-//    page, perPage := GetPaginationParams(r, 1, 10)
+//
+//	page, perPage := GetPaginationParams(r, 1, 10)
 func GetPaginationParams(r *http.Request, defaultPage, defaultPerPage int) (page int, perPage int) {
 	// Get page and per_page parameters from query string or use default values
 	pageStr := r.URL.Query().Get("page")
@@ -203,7 +205,6 @@ func GetPaginationParams(r *http.Request, defaultPage, defaultPerPage int) (page
 
 	return page, perPage
 }
-
 
 func GetParam(r *http.Request, paramName string) (string, error) {
 	params := mux.Vars(r)

@@ -33,7 +33,7 @@ import (
 //   bool: A boolean value indicating whether the user is authenticated or not.
 func IsAuthenticate(r *http.Request) bool {
 	// Check if user is authenticated
-	tokenString := r.Header.Get("token")
+	tokenString := r.Header.Get("Authorization")
 
 	if tokenString == "" {
 		return false

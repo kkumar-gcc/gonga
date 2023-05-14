@@ -11,40 +11,46 @@ import (
 // It returns a PaginatedResult struct containing the paginated items, as well as metadata such as the total number of records, total number of pages, and the number of remaining items.
 // The out parameter should be a pointer to a slice that will hold the paginated items.
 // If any errors occur during pagination, an error is returned.
-func Paginate(r *http.Request, db *gorm.DB, out interface{}) (PaginatedResult, error) {
+func Paginate(r *http.Request, db *gorm.DB, out interface{}, associations ...string) (PaginatedResult, error) {
 
 	page, perPage := GetPaginationParams(r, 1, 10)
 
-    var result PaginatedResult
+	var result PaginatedResult
 
-    // calculate the offset based on the current page and number of items per page
-    offset := (page - 1) * perPage
+	// calculate the offset based on the current page and number of items per page
+	offset := (page - 1) * perPage
 
-    // get the total number of records
-    var count int64
-    if err := db.Model(out).Count(&count).Error; err != nil {
-        return result, err
-    }
+	// get the total number of records
+	var count int64
+	if err := db.Model(out).Count(&count).Error; err != nil {
+		return result, err
+	}
+	// preload specified relationships
+	for _, association := range associations {
+		db = db.Preload(association)
+	}
+	// get the paginated items
+	if err := db.Offset(offset).Limit(perPage).Find(out).Error; err != nil {
+		return result, err
+	}
 
-    // get the paginated items
-    if err := db.Offset(offset).Limit(perPage).Find(out).Error; err != nil {
-        return result, err
-    }
+	// calculate the total number of pages based on the total number of records and items per page
+	totalPages := int(math.Ceil(float64(count) / float64(perPage)))
 
-    // calculate the total number of pages based on the total number of records and items per page
-    totalPages := int(math.Ceil(float64(count) / float64(perPage)))
+	// calculate the number of remaining items
+	remaining := int(count) - (page * perPage)
 
-    // calculate the number of remaining items
-    remaining := int(count) - (page * perPage)
+	if remaining < 0 {
+		remaining = 0
+	}
+	result = PaginatedResult{
+		Page:         page,
+		PerPage:      perPage,
+		TotalRecords: int(count),
+		TotalPages:   totalPages,
+		Items:        out,
+		Remaining:    remaining,
+	}
 
-    result = PaginatedResult{
-        Page:         page,
-        PerPage:      perPage,
-        TotalRecords: int(count),
-        TotalPages:   totalPages,
-        Items:        out,
-        Remaining:    remaining,
-    }
-
-    return result, nil
+	return result, nil
 }

@@ -17,7 +17,7 @@ type UserController struct {
 func (uc UserController) Index(w http.ResponseWriter, r *http.Request) {
 
 	var users []Models.User
-	result, err := utils.Paginate(r, uc.DB, &users)
+	result, err := utils.Paginate(r, uc.DB, &users, "Posts")
 
 	if err != nil {
 		utils.JSONResponse(w, http.StatusInternalServerError, err.Error())
