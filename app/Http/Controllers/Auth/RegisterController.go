@@ -1,6 +1,8 @@
 package auth
 
 import (
+	requests "gonga/app/Http/Requests/Auth"
+	responses "gonga/app/Http/Responses/Auth"
 	"gonga/app/Models"
 	"gonga/utils"
 	"net/http"
@@ -12,17 +14,6 @@ type RegisterController struct {
 	DB *gorm.DB
 }
 
-type RegisterUser struct {
-	Username string `json:"username" validate:"required,min=3,max=5"`
-	Password string `json:"password" validate:"required,min=8"`
-	Email    string `json:"email" validate:"required,email"`
-}
-
-type RegisterResponse struct {
-	Token   string `json:"token"`
-	UserID  int    `json:"user_id"`
-	Message string `json:"message"`
-}
 
 func (c RegisterController) Index(w http.ResponseWriter, r *http.Request) {
 	// Handle GET /registercontroller request
@@ -34,7 +25,7 @@ func (c RegisterController) Show(w http.ResponseWriter, r *http.Request) {
 
 func (c RegisterController) Create(w http.ResponseWriter, r *http.Request) {
 	// Parse request body
-	var user RegisterUser
+	var user requests.RegisterRequest
 	if err := utils.DecodeRequestBody(r, &user); err != nil {
 		utils.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
@@ -70,7 +61,7 @@ func (c RegisterController) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Send response
-	response := RegisterResponse{
+	response := responses.RegisterResponse{
 		Token:   token,
 		UserID:  int(newUser.ID),
 		Message: "Registration successful",

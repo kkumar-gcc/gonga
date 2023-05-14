@@ -57,7 +57,7 @@ func (c *CloudinaryClient) UploadImage(file multipart.File, publicID string) (*g
 	}, nil
 }
 
-func (c *CloudinaryClient) UploadVideo(filepath string, publicID string) (*gongaCloudinary.CloudinaryResponse, error) {
+func (c *CloudinaryClient) UploadVideo(file multipart.File, publicID string) (*gongaCloudinary.CloudinaryResponse, error) {
 	// Set upload options
 	uploadOptions := uploader.UploadParams{
 		PublicID:     publicID,
@@ -66,7 +66,7 @@ func (c *CloudinaryClient) UploadVideo(filepath string, publicID string) (*gonga
 	}
 
 	// Upload video
-	uploadResult, err := c.Client.Upload.Upload(c.Ctx, filepath, uploadOptions)
+	uploadResult, err := c.Client.Upload.Upload(c.Ctx, file, uploadOptions)
 	if err != nil {
 		return nil, fmt.Errorf("failed to upload video: %v", err)
 	}

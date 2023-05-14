@@ -1,23 +1,13 @@
 package auth
 
 import (
+	requests "gonga/app/Http/Requests/Auth"
+	responses "gonga/app/Http/Responses/Auth"
 	"gonga/utils"
-	"log"
 	"net/http"
 
 	"gorm.io/gorm"
 )
-
-type LoginRequest struct {
-	Username string `json:"username" validate:"required,min=3,max=5"`
-	Password string `json:"password" validate:"required,min=8"`
-}
-
-type LoginResponse struct {
-	Token   string `json:"token"`
-	UserID  int    `json:"user_id"`
-	Message string `json:"message"`
-}
 
 type LoginController struct {
 	DB *gorm.DB
@@ -46,14 +36,14 @@ func (c LoginController) Create(w http.ResponseWriter, r *http.Request) {
 	// You can get the request body by reading from r.Body
 	// You can send a response by writing to w
 	// Parse request body
-	var user LoginRequest
+	var user requests.LoginRequest
 
 	if err := utils.DecodeRequestBody(r, &user); err != nil {
 		utils.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
 	// Validate user data
-	log.Println(user)
+
 	if err := utils.ValidateRequest(w, &user); err != nil {
 		return
 	}
@@ -72,7 +62,7 @@ func (c LoginController) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Send response
-	response := LoginResponse{
+	response := responses.LoginResponse{
 		Token:   token,
 		UserID:  userID,
 		Message: "Login successful",

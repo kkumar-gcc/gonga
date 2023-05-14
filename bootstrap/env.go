@@ -11,5 +11,4 @@ func LoadEnv() {
 	if err != nil {
 		pterm.Fatal.Printf("Error loading .env file: %s", err)
 	}
-
 }

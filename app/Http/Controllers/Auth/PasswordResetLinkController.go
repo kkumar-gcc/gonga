@@ -2,11 +2,13 @@ package auth
 
 import (
 	"fmt"
+	requests "gonga/app/Http/Requests/Auth"
 	"gonga/app/Models"
 	mail "gonga/packages/Mail"
 	"gonga/utils"
 	"net/http"
 	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -14,9 +16,6 @@ type PasswordResetLinkController struct {
 	DB *gorm.DB
 }
 
-type ResetPassowrdRequest struct {
-	Email    string `json:"email" validate:"required,email"`
-}
 
 
 func (c PasswordResetLinkController) Index(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +27,7 @@ func (c PasswordResetLinkController) Show(w http.ResponseWriter, r *http.Request
 }
 
 func (c PasswordResetLinkController) Create(w http.ResponseWriter, r *http.Request) {
-    var resetPassword ResetPassowrdRequest
+    var resetPassword requests.ResetPassowrdRequest
     if err := utils.DecodeRequestBody(r, &resetPassword); err != nil {
 		utils.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
