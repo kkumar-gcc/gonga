@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/gorilla/mux"
 )
 
 // Env gets the value of an environment variable.
@@ -165,4 +166,50 @@ func ValidateRequest(w http.ResponseWriter, rules interface{}) error {
 		return err
 	}
 	return nil
+}
+
+
+// GetPaginationParams extracts pagination parameters from the provided HTTP request's query string.
+// If the "page" or "per_page" parameters are not present in the query string, this function will use the provided default values.
+// It returns two integers: the page number and the number of items per page.
+//
+// Example usage:
+//    page, perPage := GetPaginationParams(r, 1, 10)
+func GetPaginationParams(r *http.Request, defaultPage, defaultPerPage int) (page int, perPage int) {
+	// Get page and per_page parameters from query string or use default values
+	pageStr := r.URL.Query().Get("page")
+	if pageStr == "" {
+		page = defaultPage
+	} else {
+		pageInt, err := strconv.Atoi(pageStr)
+		if err != nil {
+			page = defaultPage
+		} else {
+			page = pageInt
+		}
+	}
+
+	perPageStr := r.URL.Query().Get("per_page")
+	if perPageStr == "" {
+		perPage = defaultPerPage
+	} else {
+		perPageInt, err := strconv.Atoi(perPageStr)
+		if err != nil {
+			perPage = defaultPerPage
+		} else {
+			perPage = perPageInt
+		}
+	}
+
+	return page, perPage
+}
+
+
+func GetParam(r *http.Request, paramName string) (string, error) {
+	params := mux.Vars(r)
+	val, ok := params[paramName]
+	if !ok {
+		return "", fmt.Errorf("missing parameter %s", paramName)
+	}
+	return val, nil
 }
